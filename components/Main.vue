@@ -43,7 +43,7 @@
       <div id="need-more" class="flex justify-center items-center p-1">
         <button class="py-1 px-4 border border-dashed border-black text-blue-700 font-semibold rounded-md">Need More</button>
       </div>
-      <div class="flex justify-center items-center p-1">
+      <div class="flex justify-center items-center p-1 mb-6">
         <p>Order now...only <span class="font-bold text-red-600">58</span> left in stock</p> 
       </div>
       <!-- Shipping Address Section -->
@@ -58,7 +58,7 @@
         <input type="email" placeholder="Apt, suite, etc (optional)" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
         <input type="email" placeholder="Town / City" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2 mb-2 w-full" maxlength="50">
 
-        <div class="flex gap-3.5">
+        <div class="flex gap-1.5">
           <select name="US" id="countries" class="p-2 border border-gray-400 rounded-md">
             <option value="disabled" disabled>Select Country</option>
             <option value="US">United States</option>
@@ -67,7 +67,7 @@
             <option value="disabled" >Select State</option>
             <option value="US">United States</option>
           </select>
-          <input type="text" placeholder="Postal Code" class="border rounded-md border-gray-300 py-[6px] px-[12px] w-48" maxlength="50" >
+          <input type="text" placeholder="Postal Code" class="border rounded-md border-gray-300 py-[6px] px-[12px] w-40" maxlength="50" >
         </div>
 
         <!-- Shipping Method Section-->
@@ -118,11 +118,11 @@
             <option value="disabled" >Select State</option>
             <option value="US">United States</option>
           </select>
-          <input type="text" placeholder="Postal Code" class="border rounded-md border-gray-300 py-[6px] px-[12px] w-48" maxlength="50" >
+          <input type="text" placeholder="Postal Code" class="border rounded-md border-gray-300 py-[6px] px-[12px] w-36" maxlength="50">
         </div>
 
         <div class="flex flex-col justify-center items-center bg-[#EFCA08] p-2">
-          <p class="border-dashed border-red-500 border py-4 px-56 mb-6">Timer</p>
+          <p class="border-dashed border-red-500 border-2 py-4 px-[44%] mb-6">Timer</p>
           <div class="flex items-center gap-6">
             <input type="checkbox" class="cursor-pointer">
             <p class="text-xs cursor-pointer font-bold text-pretty">{{ bill.tandcText }}</p>
@@ -147,7 +147,7 @@
             {{ productBoxContent.redText }}
           </p>
         </div>
-        <p class="font-bold">{{ productBoxContent.ratingText }}</p>
+        <p class="font-bold text-sm">{{ productBoxContent.ratingText }}</p>
         <img
           src="/public/images/sale_airmoto.webp"
           width="150"
