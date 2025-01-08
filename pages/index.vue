@@ -9,6 +9,9 @@
 import { CheckoutHeader, FormHead, FormFooter, Main } from "~/components";
 
 
+// Checkout Store
+const checkoutStore = useCheckoutStore();
+
 // importClick handler
 const importClick = async () => {
   const requestOptions = {
@@ -30,14 +33,25 @@ importClick().then(() => {
 });
 
 
-// queryChampain handler
-const queryChampain = () => {
-  const requestOptions = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-}
+// queryCampaign Handler
+
+const queryCampaign = async () => {
+  const apiUrl =
+    "/api/queryCampaign";
+
+  try {
+    const response = await fetch(apiUrl); // Make a GET request
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+    const data = await response.json();
+    const Products = data.message.data["65"].products;
+    checkoutStore.addAllProducts(Products);
+    console.log("Products:", Products);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+queryCampaign();
 
 </script>

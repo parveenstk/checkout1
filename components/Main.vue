@@ -14,10 +14,10 @@
       <!-- Express Checkout -->
       <div
         id="Express-checkout"
-        class="flex flex-col justify-center items-center mt-5 mb-5"
+        class="flex flex-col justify-center items-center mt-5"
       >
         <p class="font-bold text-sm">{{ expressChck.text }}</p>
-        <div class="mt-3">
+        <div class="mt-3 mb-5">
           <PaypalLink />
         </div>
       </div>
@@ -31,14 +31,10 @@
       </div>
       <!-- vertical line -->
       <hr class="mb-3" />
-      <div>
-        <OfferComponent />
-        <OfferComponent />
-        <OfferComponent />
-        <OfferComponent />
-        <OfferComponent />
-        <OfferComponent />
-        <OfferComponent />
+      <div>Testing................</div>
+      <!-- <div>{{ checkoutStore.airmotoPack }}</div> -->
+      <div v-for="airmoto in checkoutStore.airmotoPack">
+        <OfferComponent :quantity="airmoto.quantity" />
       </div>
       <div id="need-more" class="flex justify-center items-center p-1">
         <button class="py-1 px-4 border border-dashed border-black text-blue-700 font-semibold rounded-md">Need More</button>
@@ -51,8 +47,8 @@
         <p class="mb-2">Enter your shipping address</p>
         <input type="email" placeholder="Email (For Order Confirmation)" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
         <div class="flex gap-2">
-          <input type="text" placeholder="First Name" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2" maxlength="50">
-          <input type="text" placeholder="Last Name" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2" maxlength="50" >
+          <input type="text" placeholder="First Name" class="border rounded-md border-gray-300 py-[6px] px-[19px] mt-2" maxlength="50">
+          <input type="text" placeholder="Last Name" class="border rounded-md border-gray-300 py-[6px] px-[19px] mt-2" maxlength="50" >
         </div>
         <input type="email" placeholder="Address 1" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
         <input type="email" placeholder="Apt, suite, etc (optional)" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
@@ -224,7 +220,7 @@
         />
         <p class="text-xs text-center">🔒 Secure 256-bit SSL encryption</p>
       </div>
-      <div class="flex justify-center items-center gap-2 mb-6" >
+      <div class="flex justify-center items-center gap-2 mb-6 mt-4" >
         <div class="w-[70%]">
           <img
           src="/public/images/badge_guarantee_2.webp"
@@ -264,6 +260,8 @@ const timer = discountTimercontent;
 const { expressChck, airmotoPackage, productBoxContent, orderHeading, shippingMethods, payment, reviews } =
   formContent;
 
+// checkoutStore
+const checkoutStore = useCheckoutStore();
 
   // Shipping Method Section
   const methods = shippingMethods;

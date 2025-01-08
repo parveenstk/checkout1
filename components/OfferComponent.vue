@@ -4,7 +4,7 @@
   >
     <div>
       <input type="radio" class="ml-2 cursor-pointer" />
-      <span class="ml-2 font-bold">Buy 1 - Airmoto </span>
+      <span class="ml-2 font-bold">Buy {{quantity}} - Airmoto </span>
     </div>
     <div id="part-2" class="flex flex-col justify-end mr-2 mt-2 mb-2 text-right">
       <span class="text-xs line-through">$139.95</span>
@@ -13,4 +13,8 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+  quantity: Number,
+})
+</script>

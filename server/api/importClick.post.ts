@@ -11,9 +11,6 @@ export default defineEventHandler(async (event) => {
         requestOption
     ).then(response => response.json());
     
-    
     return { ...data };
-
-    
 })
 
