@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { CheckoutHeader, FormHead, FormFooter, Main } from "~/components";
+import { CheckoutHeader, FormHead, FormFooter, Main } from "~/components/export";
 
 
 // Checkout Store
@@ -40,7 +40,7 @@ const queryCampaign = async () => {
     "/api/queryCampaign";
 
   try {
-    const response = await fetch(apiUrl); // Make a GET request
+    const response = await fetch(apiUrl); // Make a GET request `
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
     const data = await response.json();
