@@ -10,6 +10,7 @@ export interface AirmotoPack {
     price: string;
     productName: string;
     rating: string;
+    adjectPrice: string;
 }
 
 export interface CampaignProduct {
@@ -18,4 +19,16 @@ export interface CampaignProduct {
     price: string;
     productName: string;
     rating: string;
+}
+
+export interface ShippingMethods {
+    profileName: string;
+    shipProfileId: number;
+    rules: [{ shipPrice: string }];
+}
+
+export interface States {
+    countryCode: string;
+    countryName: string;
+    statename: string;
 }

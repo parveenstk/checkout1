@@ -9,7 +9,7 @@
     <div id="part-2" class="flex flex-col justify-end mr-2 mt-2 mb-2 text-right">
       <span v-if="rating" class="text-[12px] font-medium">{{ rating }}</span>
       <span class="text-xs line-through text-slate-500">${{ strokedPrice }}</span>
-      <span>$69.99/ea</span>
+      <span>{{ adjectPrice }}</span>
     </div>
   </div>
 </template>
@@ -20,5 +20,6 @@ const props = defineProps({
   strokedPrice: String,
   rating: String,
   checked: Boolean,
+  adjectPrice: String,
 })
 </script>

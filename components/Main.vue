@@ -28,7 +28,7 @@
       <!-- <div>{{ checkoutStore.airmotoPack }}</div> -->
       <!-- airmoto pakage product -->
       <div v-for="airmoto in checkoutStore.airmotoPack" @click="trackAirmotoPackage(airmoto.productId)">
-        <OfferComponent :quantity="airmoto.quantity" :strokedPrice="airmoto.compareAtPrice" :rating="airmoto.rating"
+        <OfferComponent :quantity="airmoto.quantity" :strokedPrice="airmoto.compareAtPrice" :rating="airmoto.rating" :adjectPrice="airmoto.adjectPrice"
           :checked="selectedAirmoto === airmoto.productId" />
       </div>
       <!-- Need More Button -->
@@ -64,7 +64,7 @@
         </select>
         <select name="US" id="countries" class="p-1.5 border border-gray-400 rounded-md">
           <option value="disabled">Select State</option>
-          <option value="US">United States</option>
+          <option value="US"  >United States</option>
         </select>
         <input id="postalCode" type="text" placeholder="Postal Code"
           class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="50">
@@ -74,8 +74,7 @@
       <p class="text-lg font-bold mb-6 mt-4">{{ methods.heading }}</p>
       <select name="shipping-methods" id="methods" class="p-2 border border-gray-400 rounded-md w-full">
         <option value="disabled" disabled>{{ methods.method0 }}</option>
-        <option value="method1">{{ methods.method1 }}</option>
-        <option value="method2">{{ methods.method2 }}</option>
+        <option value="method1" v-for="method in checkoutStore.allShippingMethods">{{ method.shipName }}</option>
       </select>
       <div class="flex items-center gap-4 p-5 mb-2">
         <input type="checkbox" class="cursor-pointer">
@@ -178,9 +177,9 @@
             <p>Sub Total</p>
             <p>Shipping</p>
           </div>
-          <div id="discount-amount" class="text-sm">
-            <p class="font-bold text-red-500">$0.00</p>
-            <p>$0.00</p>
+          <div id="discount-amount" class="text-sm text-right">
+            <p class="font-bold text-red-500">${{ cartStore.discountSaving }}</p>
+            <p>${{ cartStore.subTotal }}</p>
             <p>$0.00</p>
           </div>
         </div>
