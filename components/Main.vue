@@ -28,8 +28,8 @@
       <!-- <div>{{ checkoutStore.airmotoPack }}</div> -->
       <!-- airmoto pakage product -->
       <div v-for="airmoto in checkoutStore.airmotoPack" @click="trackAirmotoPackage(airmoto.productId)">
-        <OfferComponent :quantity="airmoto.quantity" :strokedPrice="airmoto.compareAtPrice" :rating="airmoto.rating" :adjectPrice="airmoto.adjectPrice"
-          :checked="selectedAirmoto === airmoto.productId" />
+        <OfferComponent :quantity="airmoto.quantity" :strokedPrice="airmoto.compareAtPrice" :rating="airmoto.rating"
+          :adjectPrice="airmoto.adjectPrice" :checked="selectedAirmoto === airmoto.productId" />
       </div>
       <!-- Need More Button -->
       <div id="need-more" class="flex justify-center items-center p-1">
@@ -39,101 +39,115 @@
       <div class="flex justify-center items-center p-1 mb-6">
         <p>Order now...only <span class="font-bold text-red-600">58</span> left in stock</p>
       </div>
-      <!-- Shipping Address Section -->
-      <p class="font-bold text-lg ">Shipping Address</p>
-      <p class="mb-2">Enter your shipping address</p>
-      <input type="email" placeholder="Email (For Order Confirmation)"
-        class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
-      <div id="firstName-lastName" class="flex gap-2 ">
-        <input type="text" placeholder="First Name" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2"
-          maxlength="50">
-        <input type="text" placeholder="Last Name" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2"
-          maxlength="50">
-      </div>
-      <input type="email" placeholder="Address 1"
-        class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
-      <input type="email" placeholder="Apt, suite, etc (optional)"
-        class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
-      <input type="email" placeholder="Town / City"
-        class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2 mb-2 w-full" maxlength="50">
-
-      <div class="flex gap-1.5 ">
-        <select name="US" id="countries" class="p-1 border border-gray-400 rounded-md">
-          <option value="disabled" disabled>Select Country</option>
-          <option value="US">United States</option>
-        </select>
-        <select name="US" id="countries" class="p-1.5 border border-gray-400 rounded-md">
-          <option value="disabled">Select State</option>
-          <option value="US"  >United States</option>
-        </select>
-        <input id="postalCode" type="text" placeholder="Postal Code"
-          class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="50">
-      </div>
-
-      <!-- Shipping Method Section-->
-      <p class="text-lg font-bold mb-6 mt-4">{{ methods.heading }}</p>
-      <select name="shipping-methods" id="methods" class="p-2 border border-gray-400 rounded-md w-full">
-        <option value="disabled" disabled>{{ methods.method0 }}</option>
-        <option value="method1" v-for="method in checkoutStore.allShippingMethods">{{ method.shipName }}</option>
-      </select>
-      <div class="flex items-center gap-4 p-5 mb-2">
-        <input type="checkbox" class="cursor-pointer">
-        <p class="text-sm cursor-pointer">{{ methods.checkBox.text }}</p>
-      </div>
-
-      <!-- Payment -->
-      <h2 class="text-lg font-bold">{{ payment.headingText }}</h2>
-      <p class="text-sm mb-4">{{ payment.PaymentText }}</p>
-
-      <div class="flex justify-between border border-gray-300 py-3 px-2 mb-1">
-        <div class="flex items-center justify-between gap-3">
-          <input type="radio">
-          <p id="cc" class="font-bold">Credit Card</p>
+      <form @submit="(e) => handleSubmit(e)">
+        <!-- Shipping Address Section -->
+        <p class="font-bold text-lg ">Shipping Address</p>
+        <p class="mb-2">Enter your shipping address</p>
+        <input type="email" v-model="formStore.formData.email" required placeholder="Email (For Order Confirmation)"
+          class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
+        <div id="firstName-lastName" class="flex gap-2 ">
+          <input type="text" v-model="formStore.formData.firstName" required placeholder="First Name" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2"
+            maxlength="50">
+          <input type="text" v-model="formStore.formData.lastName" required placeholder="Last Name" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2"
+            maxlength="50">
         </div>
-        <img src="/public/images/cart-logo.jpg" width="160" height="28" alt="cart-logo">
-      </div>
-      <div class="flex justify-between border border-gray-300 py-3 px-2">
-        <div class="flex items-center justify-between gap-3">
-          <input type="radio">
-          <p id="paypal" class="font-bold">PayPal</p>
+        <input type="text" v-model="formStore.formData.address" required placeholder="Address 1"
+          class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
+        <input type="text" placeholder="Apt, suite, etc (optional)"
+          class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
+        <input type="text" v-model="formStore.formData.city" required placeholder="Town / City"
+          class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2 mb-2 w-full" maxlength="50">
+
+        <div class="flex gap-1.5 ">
+          <select name="US" id="countries" class="p-1 border border-gray-400 rounded-md">
+            <option value="disabled" disabled>Select Country</option>
+            <option value="US">United States</option>
+          </select>
+          <select name="US" id="countries" class="p-1.5 border border-gray-400 rounded-md">
+            <option value="disabled">Select State</option>
+            <option value="US">United States</option>
+          </select>
+          <input id="postalCode" type="text" placeholder="Postal Code"
+            class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="50">
         </div>
-      </div>
-      <div class="flex items-center gap-4 mt-6 mb-6">
-        <input type="checkbox" class="cursor-pointer">
-        <p class="text-sm cursor-pointer font-semibold">{{ methods.checkBox.text1 }}</p>
-      </div>
 
-      <!-- Billing Information -->
-      <h1 class="font-bold text-lg">{{ bill.headingText }}</h1>
-      <p>{{ bill.billingText }}</p>
-      <input type="email" placeholder="Street Address"
-        class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="100">
-      <input type="email" placeholder="City" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full"
-        maxlength="100">
-      <div class="flex gap-1.5 mt-2 mb-6">
-        <select name="US" id="countries" class="p-1 border border-gray-400 rounded-md">
-          <option value="disabled" disabled>Select Country</option>
-          <option value="US">United States</option>
+        <!-- Shipping Method Section-->
+        <p class="text-lg font-bold mb-6 mt-4">{{ methods.heading }}</p>
+        <select name="shipping-methods" id="methods" class="p-2 border border-gray-400 rounded-md w-full">
+          <option value="disabled" disabled>{{ methods.method0 }}</option>
+          <option value="method1" v-for="method in checkoutStore.allShippingMethods">{{ method.shipName }}</option>
         </select>
-        <select name="US" id="countries" class="p-1.5 border border-gray-400 rounded-md">
-          <option value="disabled">Select State</option>
-          <option value="US">United States</option>
-        </select>
-        <input id="postalCode" type="text" placeholder="Postal Code"
-          class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="50">
-      </div>
-
-      <div class="flex flex-col justify-center items-center bg-[#EFCA08] p-2">
-        <p class="border-dashed border-red-500 border-2 py-4 px-[44%] mb-6">Timer</p>
-        <div class="flex items-center gap-6">
+        <div class="flex items-center gap-4 p-5 mb-2">
           <input type="checkbox" class="cursor-pointer">
-          <p class="text-xs cursor-pointer font-bold text-pretty">{{ bill.tandcText }}</p>
+          <p class="text-sm cursor-pointer">{{ methods.checkBox.text }}</p>
         </div>
-      </div>
-      <p class="text-[13px] p-4 border-4 border-zinc-300 mb-8"><span class="font-bold">{{ bill.rMoreBold }}</span>{{
-        bill.readMore }}</p>
-      <button class="px-4 py-3 w-full rounded-md border-2 border-yellow-600 bg-[#EFCA08] text-xl font-bold">COMPLETE
-        YOUR PURCHASE</button>
+
+        <!-- Payment Section -->
+        <h2 class="text-lg font-bold">{{ payment.headingText }}</h2>
+        <p class="text-sm mb-4">{{ payment.PaymentText }}</p>
+
+        <div id="creditCard" class="flex justify-between border border-gray-300 py-3 px-2 mb1  cursor-pointer">
+          <div class="flex items-center justify-between gap-3">
+            <input type="radio">
+            <p id="cc" class="font-bold">Credit Card</p>
+          </div>
+          <img src="/public/images/cart-logo.jpg" width="160" height="28" alt="cart-logo">
+        </div>
+        
+        <div class="border-2 p-4 flex flex-col gap-2 bg-blue-50 mb-2">
+            <input id="postalCode" type="text" placeholder="Card Number"
+            class="border rounded-md border-gray-300 py-[6px] px-[12px] w-full" maxlength="50">
+            <div class="flex gap-2">
+              <input id="postalCode" type="text" placeholder="MMYY"
+            class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="50">
+            <input id="postalCode" type="text" placeholder="CVV Code"
+            class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="50">
+            </div>
+          </div>
+          
+        <div id="payPal" class="flex justify-between border border-gray-300 py-3 px-2 cursor-pointer">
+          <div class="flex items-center justify-between gap-3">
+            <input type="radio">
+            <p id="paypal" class="font-bold">PayPal</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 mt-6 mb-6">
+          <input type="checkbox" class="cursor-pointer">
+          <p class="text-sm cursor-pointer font-semibold">{{ methods.checkBox.text1 }}</p>
+        </div>
+
+        <!-- Billing Information -->
+        <h1 class="font-bold text-lg">{{ bill.headingText }}</h1>
+        <p>{{ bill.billingText }}</p>
+        <input type="email" placeholder="Street Address"
+          class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="100">
+        <input type="email" placeholder="City" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full"
+          maxlength="100">
+        <div class="flex gap-1.5 mt-2 mb-6">
+          <select name="US" id="countries" class="p-1 border border-gray-400 rounded-md">
+            <option value="disabled" disabled>Select Country</option>
+            <option value="US">United States</option>
+          </select>
+          <select name="US" id="countries" class="p-1.5 border border-gray-400 rounded-md">
+            <option value="disabled">Select State</option>
+            <option value="US">United States</option>
+          </select>
+          <input id="postalCode" type="text" placeholder="Postal Code"
+            class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="50">
+        </div>
+
+        <div class="flex flex-col justify-center items-center bg-[#EFCA08] p-2">
+          <p class="border-dashed border-red-500 border-2 py-4 px-[44%] mb-6">Timer</p>
+          <div class="flex items-center gap-6">
+            <input type="checkbox" class="cursor-pointer">
+            <p class="text-xs cursor-pointer font-bold text-pretty">{{ bill.tandcText }}</p>
+          </div>
+        </div>
+        <p class="text-[13px] p-4 border-4 border-zinc-300 mb-8"><span class="font-bold">{{ bill.rMoreBold }}</span>{{
+          bill.readMore }}</p>
+        <button class="px-4 py-3 w-full rounded-md border-2 border-yellow-600 bg-[#EFCA08] text-xl font-bold">COMPLETE
+          YOUR PURCHASE</button>
+      </form>
       <div class="flex flex-col items-center mt-6 mb-6">
         <img src="/public/images/badge_secure_guarantee.webp" alt="img1" width="353" height="60">
         <img src="/public/images/badge_credit_cards.webp" alt="img2" width="364" height="40">
@@ -244,6 +258,8 @@ const { expressChck, airmotoPackage, productBoxContent, orderHeading, shippingMe
 const checkoutStore = useCheckoutStore();
 // Cart Store
 const cartStore = useCartStore();
+// form store
+const formStore = useFormStore();
 
 // Shipping Method Section
 const methods = shippingMethods;
@@ -256,5 +272,11 @@ const selectedAirmoto = ref(3859);
 const trackAirmotoPackage = (id) => {
   selectedAirmoto.value = id;
   cartStore.updateAirmotoInCart(id)
+}
+
+// handle submit
+const handleSubmit = (e) => {
+  e.preventDefault();
+  console.log("formStore.formData",formStore.formData);
 }
 </script>
