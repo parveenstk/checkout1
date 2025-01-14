@@ -15,6 +15,8 @@ import {
 
 // Checkout Store
 const checkoutStore = useCheckoutStore();
+// formStore
+const formStore = useFormStore();
 
 // importClick API handler
 const importClick = async () => {
@@ -33,7 +35,7 @@ const importClick = async () => {
 
 importClick().then(() => {
   const id = sessionStorage.getItem("sessionId");
-  console.log("Session ID:", id);
+  // console.log("Session ID:", id);
 });
 
 // queryCampaign API Handler
@@ -47,47 +49,28 @@ const queryCampaign = async () => {
     const data = await response.json();
     // console.log("data :", data);
 
-    // all products campaign
+    // Products
     const Products = data.message.data["65"].products;
     checkoutStore.addAllProducts(Products);
-    // console.log("Products:", Products);
 
-    //  all shipping methods
+    // Countries
+    const countries = data.message.data["65"].countries;
+    checkoutStore.setCountryList(countries);
+    checkoutStore.updateStates();
+    checkoutStore.billingUpdateStates();
+    
+
     const shippingMethods = data.message.data["65"].shipProfiles;
     // const shipPrice = data.message.data["65"].shipProfiles.rules.shipPrice
+
+    
     checkoutStore.shippingMethods(shippingMethods);
-    console.log("ShippingMethods :", shippingMethods);
+    // console.log("ShippingMethods :", shippingMethods);
   } catch (error) {
     console.error("Error:", error);
   }
 };
 
 queryCampaign();
-
-// Courtry API Handler
-const importCountry = async () => {
-  const apiUrl = "/api/importCountry";
-
-  try {
-    const response = await fetch(apiUrl); // Make a GET request `
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-    const data = await response.json();
-    // console.log("data :", data);
-
-    
-    const values = Object.values(data);
-    const usStates = values.filter(state => state.countryCode === "US")
-    console.log("usStates :", usStates);
-
-    
-
-
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
-
-importCountry();
 
 </script>

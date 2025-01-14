@@ -3,14 +3,26 @@ import { defineStore } from "pinia";
 export const useCheckoutStore = defineStore('checkout', () => {
     // cartStore
     const cartStore = useCartStore();
+    // formStore
+    const formStore = useFormStore();
 
     const allProducts = ref<CampaignProduct[]>([]);
     const airmotoPack = ref<AirmotoPack[]>([]);
     const allShippingMethods = ref<ShippingMethods[]>([]);
-    const allUsStates = ref<States[]>([]);
+    const allStates = ref<States[]>([]);
+    const selectedStates = ref<States[]>([]);
+    const countryList = ref([]);
+    const billingSelectedStates = ref<States[]>([]);
+
+    // fetch country api
+    const fetchState = () => {
+        fetch('/api/importCountry').then(response => response.json()).then(result => allStates.value = result);
+    }
+
+    fetchState();
 
 
-    // Actions
+    // Airmoto Package Actions
     const addAllProducts = (productList: CampaignProduct[]) => {
         allProducts.value = productList;
 
@@ -57,13 +69,18 @@ export const useCheckoutStore = defineStore('checkout', () => {
     }
 
 
-    const states = (StateList: States[]) => {
-        stateList.forEach(state => {
-            if (state.countryCode === 'US') {
-                statesList.value.push(state);
-            }
-        })
-        console.log("states: " + states);
+    const updateStates = () => {
+        const values = Object.values(allStates.value);
+        selectedStates.value = values.filter(state => state.countryCode === formStore.formData.country);
+    }
+
+    const setCountryList = (list: []) => {
+        countryList.value = list;
+    }
+
+    const billingUpdateStates = () => {
+        const values = Object.values(allStates.value);
+        billingSelectedStates.value = values.filter(state => state.countryCode === formStore.formData.billingCountry);
     }
 
     return {
@@ -72,5 +89,11 @@ export const useCheckoutStore = defineStore('checkout', () => {
         airmotoPack,
         shippingMethods,
         allShippingMethods,
+        selectedStates,
+        updateStates,
+        countryList,
+        setCountryList,
+        billingUpdateStates,
+        billingSelectedStates,
     }
 })

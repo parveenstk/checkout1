@@ -46,9 +46,9 @@
         <input type="email" v-model="formStore.formData.email" required placeholder="Email (For Order Confirmation)"
           class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
         <div id="firstName-lastName" class="flex gap-2 ">
-          <input type="text" v-model="formStore.formData.firstName" required placeholder="First Name" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2"
+          <input type="text" v-model="formStore.formData.firstName" required placeholder="First Name" class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2 mt-2"
             maxlength="50">
-          <input type="text" v-model="formStore.formData.lastName" required placeholder="Last Name" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2"
+          <input type="text" v-model="formStore.formData.lastName" required placeholder="Last Name" class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2 mt-2"
             maxlength="50">
         </div>
         <input type="text" v-model="formStore.formData.address" required placeholder="Address 1"
@@ -59,13 +59,13 @@
           class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2 mb-2 w-full" maxlength="50">
 
         <div class="flex gap-1.5 ">
-          <select name="US" id="countries" class="p-1 border border-gray-400 rounded-md">
-            <option value="disabled" disabled>Select Country</option>
-            <option value="US">United States</option>
+          <select @change="checkoutStore.updateStates" v-model="formStore.formData.country" name="US" id="countries" class="p-1 border border-gray-400 rounded-md">
+            <option value="disabled" disabled >Select Country</option>
+            <option  :value="country.countryCode" v-for="country in checkoutStore.countryList" >{{ country.countryName }}</option>
           </select>
-          <select name="US" id="countries" class="p-1.5 border border-gray-400 rounded-md">
-            <option value="disabled">Select State</option>
-            <option value="US">United States</option>
+          <select name="US" id="countries" class="p-1.5 border border-gray-400 rounded-md w-1/3">
+            <option value="disabled" disabled>Select State</option>
+            <option :value="state.stateCode" v-for="state in checkoutStore.selectedStates" >{{ state.stateName }}</option>
           </select>
           <input id="postalCode" type="text" placeholder="Postal Code"
             class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="50">
@@ -86,7 +86,7 @@
         <h2 class="text-lg font-bold">{{ payment.headingText }}</h2>
         <p class="text-sm mb-4">{{ payment.PaymentText }}</p>
 
-        <div id="creditCard" class="flex justify-between border border-gray-300 py-3 px-2 mb1  cursor-pointer">
+        <div id="creditCard" class="flex justify-between border border-gray-300 py-3 px-2 mb-0.5 cursor-pointer">
           <div class="flex items-center justify-between gap-3">
             <input type="radio">
             <p id="cc" class="font-bold">Credit Card</p>
@@ -98,9 +98,9 @@
             <input id="postalCode" type="text" placeholder="Card Number"
             class="border rounded-md border-gray-300 py-[6px] px-[12px] w-full" maxlength="50">
             <div class="flex gap-2">
-              <input id="postalCode" type="text" placeholder="MMYY"
+              <input id="Year-Month" type="text" placeholder="MMYY"
             class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="50">
-            <input id="postalCode" type="text" placeholder="CVV Code"
+            <input id="CVV" type="text" placeholder="CVV Code"
             class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="50">
             </div>
           </div>
@@ -119,21 +119,21 @@
         <!-- Billing Information -->
         <h1 class="font-bold text-lg">{{ bill.headingText }}</h1>
         <p>{{ bill.billingText }}</p>
-        <input type="email" placeholder="Street Address"
+        <input v-model="formStore.formData.billingAddress" type="email" placeholder="Street Address"
           class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="100">
-        <input type="email" placeholder="City" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full"
+        <input v-model="formStore.formData.billingCity" type="text" placeholder="City" class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full"
           maxlength="100">
         <div class="flex gap-1.5 mt-2 mb-6">
-          <select name="US" id="countries" class="p-1 border border-gray-400 rounded-md">
-            <option value="disabled" disabled>Select Country</option>
-            <option value="US">United States</option>
+          <select @change="checkoutStore.billingUpdateStates" v-model="formStore.formData.billingCountry" id="countries" class="p-1 border border-gray-400 rounded-md">
+            <option disabled>Select Country</option>
+            <option v-for="country in checkoutStore.countryList" :value="country.countryCode" >{{ country.countryName }}</option>
           </select>
-          <select name="US" id="countries" class="p-1.5 border border-gray-400 rounded-md">
-            <option value="disabled">Select State</option>
-            <option value="US">United States</option>
+          <select v-model="formStore.formData.billingState" id="countries" class="p-1.5 border border-gray-400 rounded-md w-1/3" required>
+            <option value="" disabled>Select State</option>
+            <option :key="state.stateCode" :value="state.stateCode" v-for="state in checkoutStore.billingSelectedStates">{{ state.stateName }}</option>
           </select>
-          <input id="postalCode" type="text" placeholder="Postal Code"
-            class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="50">
+          <input v-model="formStore.formData.billingPostalCode" id="postalCode" type="text" placeholder="Postal Code"
+            class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="12">
         </div>
 
         <div class="flex flex-col justify-center items-center bg-[#EFCA08] p-2">
@@ -207,7 +207,7 @@
       </p>
       <div class="flex flex-col justify-center items-center gap-3 bg-zinc-100 pb-4">
         <div class="flex justify-center gap-2">
-          <input type="text" name="" id="coupon-code" class="w-1/2 border border-black rounded-md"
+          <input type="text" id="coupon-code" class="w-1/2 border border-black rounded-md px-1"
             placeholder=" Coupon Code" />
           <button class="py-1 px-4 bg-black text-white font-bold rounded-md">
             Apply
@@ -264,7 +264,7 @@ const formStore = useFormStore();
 // Shipping Method Section
 const methods = shippingMethods;
 
-// Biiling information
+// Biiling information Content
 const bill = payment.billingInformation
 
 // track airmoto package
