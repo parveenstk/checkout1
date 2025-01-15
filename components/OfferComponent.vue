@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border-zinc-500 border-2 rounded-md font-semibold gap-2 flex justify-between items-center mb-2 cursor-pointer"
+    class="border-zinc-400 border rounded-md font-semibold gap-2 flex justify-between items-center mb-2 cursor-pointer"
   >
     <div>
       <input type="radio" class="ml-2 cursor-pointer" :checked="checked" />

@@ -69,6 +69,10 @@ export const useCheckoutStore = defineStore('checkout', () => {
     }
 
 
+
+
+
+    // States
     const updateStates = () => {
         const values = Object.values(allStates.value);
         selectedStates.value = values.filter(state => state.countryCode === formStore.formData.country);
@@ -78,10 +82,14 @@ export const useCheckoutStore = defineStore('checkout', () => {
         countryList.value = list;
     }
 
+    // Billing States
     const billingUpdateStates = () => {
         const values = Object.values(allStates.value);
         billingSelectedStates.value = values.filter(state => state.countryCode === formStore.formData.billingCountry);
     }
+
+
+
 
     return {
         allProducts,

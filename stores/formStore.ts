@@ -5,10 +5,12 @@ export const useFormStore = defineStore("Form Store", () => {
         firstName: "",
         lastName: "",
         address: "",
+        address2: "",
         city: "",
         country: "US",
         state: "",
         postalCode: "",
+        phoneNumber: "",
         
         // Card Details
         cardNumber: "",
@@ -20,8 +22,9 @@ export const useFormStore = defineStore("Form Store", () => {
         billingCity: "",
         billingCountry: "US",
         billingState: "",
-        billingPostalCode: "",
 
+        // shipphin mehtod
+        shippingMethod: "",
     }
 
     return {
