@@ -32,3 +32,8 @@ export interface States {
     countryName: string;
     statename: string;
 }
+
+export interface ProductAdded {
+    productName: string;
+    price: string;
+}

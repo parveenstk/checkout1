@@ -4,7 +4,7 @@ export const useCartStore = defineStore('cart', () => {
     // formStore
     const formStore = useFormStore();
 
-    const cartData = ref({});
+    const cartData = ref([]);
     const discountSaving = ref(0.00);
     const subTotal = ref(0.00);
     const shippingPrice = ref(0);
@@ -14,7 +14,7 @@ export const useCartStore = defineStore('cart', () => {
     const updateAirmotoInCart = (id: number) => {
         const selectedPack = checkoutStore.airmotoPack.filter(pack => pack.productId === id);
 
-        cartData.value = selectedPack[0];
+        cartData.value.push(selectedPack[0]);
         discoutOffer();
         sTotal();
 
@@ -36,11 +36,15 @@ export const useCartStore = defineStore('cart', () => {
         shippingPrice.value = +selectedShipping.rules[0].shipPrice;
     }
 
-    // Order Total
-    // const updateOrderTotal = () => {
-         
-    // }
+    // add product in cart
+    const addProduct = (id: number) => {
+        const selectedProduct = checkoutStore.otherProducts.filter(product => product.productId === id)
+        cartData.value.push(selectedProduct[0]);
+    }
 
+    const removeProduct = (id: number) => {
+        cartData.value = cartData.value.filter(product => product.productId!== id)
+    }
 
     return {
         cartData,
@@ -49,7 +53,9 @@ export const useCartStore = defineStore('cart', () => {
         subTotal,
         shippingPrice,
         updateShippingPrice,
-        cartTotal
+        cartTotal,
+        addProduct,
+        removeProduct
     }
 })
 

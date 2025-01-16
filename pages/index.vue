@@ -51,7 +51,16 @@ const queryCampaign = async () => {
 
     // Products
     const Products = data.message.data["65"].products;
+    // console.log("Products :", Products);
     checkoutStore.addAllProducts(Products);
+
+    // Shipping Guarantee
+    const shippingGuarantee = data.message.data["65"].products[0];
+    console.log("shippingGuarantee", shippingGuarantee);
+
+    // VIP Customer Benefits
+    const vipCustomerBenefits = data.message.data["65"].products[11];
+    // console.log("vipCustomerBenefits", vipCustomerBenefits);
 
     // Countries
     const countries = data.message.data["65"].countries;
