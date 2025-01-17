@@ -81,11 +81,11 @@
           <select v-model="formStore.formData.state" name="US" id="countries"
             class="p-1.5 border border-gray-400 rounded-md w-1/3">
             <option value="" disabled>Select State</option>
-            <option :value="state.stateCode" v-for="state in checkoutStore.selectedStates">{{ state.stateName }}
+            <option :value="state.stateName" v-for="state in checkoutStore.selectedStates">{{ state.stateName }}
             </option>
           </select>
           <input id="postalCode" :maxlength="9" type="text" placeholder="Postal Code"
-            class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" maxlength="10" required
+            class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/3" maxlength="10" required
             @input="validateInput('postalCode', $event)">
         </div>
 
@@ -123,7 +123,7 @@
           </label>
           <div v-if="selectedPaymentMethod === 'creditCard'" class="border-2 p-4 flex flex-col gap-2 bg-blue-50 mb-0.5">
             <input id="creditCardNumber" type="tel" placeholder="Card Number"
-              class="border rounded-md border-gray-300 py-[6px] px-[12px] w-full" maxlength="19" required
+              class="border rounded-md border-gray-300 py-[6px] px-[12px] w-full" maxlength="17" required
               @input="validateInput('cardNumber', $event)" />
             <div class="flex gap-2">
               <input id="Year-Month" type="text" placeholder="MMYY" @input="validateInput('expiry', $event)"
@@ -151,14 +151,13 @@
 
         <div @click="() => handleSameShippingAddress()" class="flex items-center gap-4 mt-6 mb-6 w-fit">
           <input :checked="sameShippingAddress" id="billSame" name="billSame" type="checkbox" class="cursor-pointer" />
-
           <p class="text-sm font-semibold select-none cursor-pointer">
             {{ methods.checkBox.text1 }}
           </p>
         </div>
 
         <!-- Billing Information -->
-        <div v-if="sameShippingAddress">
+        <div v-if="!sameShippingAddress">
           <h1 class="font-bold text-lg">{{ bill.headingText }}</h1>
           <p>{{ bill.billingText }}</p>
           <input v-model="formStore.formData.billingAddress" type="text" placeholder="Street Address"
@@ -180,15 +179,18 @@
                 v-for="state in checkoutStore.billingSelectedStates">{{ state.stateName }}</option>
             </select>
             <input @input="validateInput('zipCode', $event)" id="postalCode" type="text" placeholder="Zip"
-              class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" :minlength="3" :maxlength="9" required>
+              class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/3" :minlength="3" :maxlength="9" required>
           </div>
         </div>
 
+        <!-- VIP Product -->
         <div class="flex flex-col justify-center items-center bg-[#FFBF00] p-2">
           <p class="border-dashed border-red-500 border-2 py-4 px-[44%] mb-6">Timer</p>
-          <div class="flex items-center gap-6">
-            <input type="checkbox" class="cursor-pointer">
-            <p class="text-xs cursor-pointer font-bold text-pretty">{{ bill.tandcText }}</p>
+          <div @click="() => addVipOptin()" class="flex items-center gap-6">
+            <input :checked="vipOptin" type="checkbox" id="termsCheckbox" class="cursor-pointer">
+            <div for="termsCheckbox" class="text-xs cursor-pointer font-bold text-pretty">
+              {{ bill.tandcText }}
+            </div>
           </div>
         </div>
         <p class="text-[13px] p-4 border-4 border-zinc-300 mb-8"><span class="font-bold">{{ bill.rMoreBold }}</span>{{
@@ -219,7 +221,6 @@
       <div id="Your Cart" class="w-full bg-zinc-100 pb-1">
         <h1 class="font-bold ml-2">{{ productBoxContent.yCard }}</h1>
       </div>
-      <!-- <hr class="h-px w-56 bg-gray-200 border-0 dark:bg-gray-700"> -->
       <div class="border border-zinc-300 bg-zinc-100">
         <div class="flex w-full gap-2 mt-2 p-3">
           <svg width="20" height="19" xmlns="http://www.w3.org/2000/svg" href="" srcset=""
@@ -299,6 +300,7 @@
 </template>
 
 <script setup>
+
 const timer = discountTimercontent;
 const { expressChck, airmotoPackage, productBoxContent, orderHeading, shippingMethods, payment, reviews } =
   formContent;
@@ -332,6 +334,17 @@ const addShipGuard = () => {
   }
 }
 
+// VIP Optin
+const vipOptin = ref(false);
+const addVipOptin = () => {
+  vipOptin.value = !vipOptin.value;
+  if (vipOptin.value) {
+    cartStore.addProduct(3880);
+  } else {
+    cartStore.removeProduct(3880);
+  }
+}
+
 // track airmoto package
 const selectedAirmoto = ref(3859);
 const trackAirmotoPackage = (id) => {
@@ -348,6 +361,7 @@ const trackAirmotoPackage = (id) => {
 // handle submit
 const handleSubmit = (e) => {
   e.preventDefault();
+  importLead();
   console.log("formStore.formData", formStore.formData);
 }
 
@@ -385,14 +399,73 @@ const togglePaymentMethod = (method) => {
 };
 
 // Billing information 
-const sameShippingAddress = ref(false);
+const sameShippingAddress = ref(true);
 
 const handleSameShippingAddress = () => {
   sameShippingAddress.value = !sameShippingAddress.value;
-  console.log("chala");
-  console.log("sameShippingAddress.value", sameShippingAddress.value);
-
 }
 
+
+// Import Lead API Handler
+
+const importLead = async () => {
+  const sessionId = sessionStorage.getItem("sessionId");
+  const apiUrl = "/api/importLead";
+  const data = {
+    // shipping detials
+    shipFirstName: formValues.firstName,
+    shipLastName: formValues.lastName,
+    emailAddress: formValues.email,
+    shipAddress1: formValues.address,
+    shipAddress2: formValues.address2,
+    shipCity: formValues.city,
+    shipCountry: formValues.country,
+    shipState: formValues.shipState,
+    shipPostalCode: formValues.postalCode,
+    phoneNumber: formValues.phoneNumber,
+    // billing details
+    billingFirstName: formValues.firstName,
+    billingLastName: formValues.lastName,
+    billingEmail: formValues.email,
+    billingAddress1: formValues.address,
+    billingAddress2: formValues.address2,
+    billingCity: formValues.billingCity,
+    billingCountry: formValues.billingCountry,
+    billingState: formValues.billingState,
+    billingPostalCode: formValues.billingPostalCode,
+    billingPhoneNumber: formValues.phoneNumber,
+    campaignId: "65",
+    billShipSame: "",
+    ipAddress: "",
+    sessionId: sessionId,
+    couponCode: "",
+    affId: "",
+    orderId: "",
+    pageType: "checkout",
+    requestUri: "http://localhost:3001/",
+    salesUrl: "http://localhost:3001/",
+    shipProfileId: formValues.shippingMethod,
+    redirectsTo: "http://localhost:3001/",
+    errorRedirectsTo: "http://localhost:3001/",
+  }
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  };
+
+  try {
+    const response = await fetch(apiUrl, requestOptions);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+    const data = await response.json();
+    console.log("importLead Data :", data);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+// form data values
+const formValues = formStore.formData
 
 </script>

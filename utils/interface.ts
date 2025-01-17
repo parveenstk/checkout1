@@ -30,7 +30,7 @@ export interface ShippingMethods {
 export interface States {
     countryCode: string;
     countryName: string;
-    statename: string;
+    stateName: string;
 }
 
 export interface ProductAdded {

@@ -6,28 +6,22 @@ export const useCartStore = defineStore('cart', () => {
 
     const cartData = ref([]);
     const discountSaving = ref(0.00);
-    const subTotal = ref(0.00);
+    const subTotal = computed(() => cartData.value.reduce((acc, curr) => acc + +curr.price, 0));
     const shippingPrice = ref(0);
     const cartTotal = computed(() => subTotal.value + shippingPrice.value)
 
 
     const updateAirmotoInCart = (id: number) => {
         const selectedPack = checkoutStore.airmotoPack.filter(pack => pack.productId === id);
-
-        cartData.value.push(selectedPack[0]);
+        if(cartData.value.length > 0) cartData.value.shift();
+        cartData.value.unshift(selectedPack[0]);
         discoutOffer();
-        sTotal();
 
     }
 
     // discount savings amount
     const discoutOffer = () => {
-        discountSaving.value = +(cartData.value.compareAtPrice - cartData.value.price).toFixed(2);
-    }
-
-    // sub-total amount
-    const sTotal = () => {
-        subTotal.value = +cartData.value.price;
+        discountSaving.value = +(cartData.value[0].compareAtPrice - cartData.value[0].price).toFixed(2);
     }
 
     // Shipping Price
@@ -43,7 +37,7 @@ export const useCartStore = defineStore('cart', () => {
     }
 
     const removeProduct = (id: number) => {
-        cartData.value = cartData.value.filter(product => product.productId!== id)
+        cartData.value = cartData.value.filter(product => product.productId !== id)
     }
 
     return {

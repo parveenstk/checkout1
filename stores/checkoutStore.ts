@@ -16,11 +16,9 @@ export const useCheckoutStore = defineStore('checkout', () => {
     const billingSelectedStates = ref<States[]>([]);
 
     // fetch country api
-    const fetchState = () => {
-        fetch('/api/importCountry').then(response => response.json()).then(result => allStates.value = result);
+    const fetchState = async () => {
+        await fetch('/api/importCountry').then(response => response.json()).then(result => allStates.value = result);
     }
-
-    fetchState();
 
 
     // Airmoto Package Actions
@@ -60,6 +58,8 @@ export const useCheckoutStore = defineStore('checkout', () => {
             }
         })
         cartStore.updateAirmotoInCart(3859);
+        formStore.formData.shippingMethod = '153';
+        cartStore.updateShippingPrice();
     }
 
     // Shipping Methods
@@ -74,12 +74,13 @@ export const useCheckoutStore = defineStore('checkout', () => {
 
 
     // States
-    const updateStates = () => {
+    const updateStates = async () => {
+        if (allStates.value.length < 1) await fetchState();
         const values = Object.values(allStates.value);
         selectedStates.value = values.filter(state => state.countryCode === formStore.formData.country);
     }
 
-    const setCountryList = (list: []) => {
+    const setCountryList = async (list: []) => {
         countryList.value = list;
     }
 
@@ -88,8 +89,6 @@ export const useCheckoutStore = defineStore('checkout', () => {
         const values = Object.values(allStates.value);
         billingSelectedStates.value = values.filter(state => state.countryCode === formStore.formData.billingCountry);
     }
-
-
 
 
     return {

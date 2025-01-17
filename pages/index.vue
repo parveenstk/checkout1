@@ -33,10 +33,7 @@ const importClick = async () => {
   }
 };
 
-importClick().then(() => {
-  const id = sessionStorage.getItem("sessionId");
-  // console.log("Session ID:", id);
-});
+importClick()
 
 // queryCampaign API Handler
 const queryCampaign = async () => {
@@ -51,12 +48,16 @@ const queryCampaign = async () => {
 
     // Products
     const Products = data.message.data["65"].products;
+    const shippingMethods = data.message.data["65"].shipProfiles;
+    // const shipPrice = data.message.data["65"].shipProfiles.rules.shipPrice
+    checkoutStore.shippingMethods(shippingMethods);
+    // console.log("ShippingMethods :", shippingMethods);
     // console.log("Products :", Products);
     checkoutStore.addAllProducts(Products);
 
     // Shipping Guarantee
     const shippingGuarantee = data.message.data["65"].products[0];
-    console.log("shippingGuarantee", shippingGuarantee);
+    // console.log("shippingGuarantee", shippingGuarantee);
 
     // VIP Customer Benefits
     const vipCustomerBenefits = data.message.data["65"].products[11];
@@ -64,17 +65,9 @@ const queryCampaign = async () => {
 
     // Countries
     const countries = data.message.data["65"].countries;
-    checkoutStore.setCountryList(countries);
-    checkoutStore.updateStates();
+    await checkoutStore.setCountryList(countries);
+    await checkoutStore.updateStates();
     checkoutStore.billingUpdateStates();
-    
-
-    const shippingMethods = data.message.data["65"].shipProfiles;
-    // const shipPrice = data.message.data["65"].shipProfiles.rules.shipPrice
-
-    
-    checkoutStore.shippingMethods(shippingMethods);
-    // console.log("ShippingMethods :", shippingMethods);
   } catch (error) {
     console.error("Error:", error);
   }
