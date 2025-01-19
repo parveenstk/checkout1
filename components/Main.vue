@@ -1,11 +1,12 @@
 <template>
   <!-- Right Part  -->
   <div class="flex justify-center gap-8">
-    <section class="w-4/12">
+    <section class="w-[39%]">
       <!-- Discount Timer -->
       <div id="discount-timer" class="bg-[#eef3c9] flex justify-center items-center gap-2 py-2 rounded-lg">
         <p class="font-semibold">{{ timer.text1 }}</p>
         <p>{{ timer.text2 }}</p>
+        <Timer />
       </div>
 
       <!-- Express Checkout -->
@@ -71,9 +72,9 @@
         <input type="text" v-model="formStore.formData.city" required placeholder="Town / City"
           class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2 mb-2 w-full" maxlength="50">
 
-        <div class="flex gap-1.5 ">
+        <div class="flex gap-1.5">
           <select @change="checkoutStore.updateStates" v-model="formStore.formData.country" name="US" id="countries"
-            class="p-1 border border-gray-400 rounded-md">
+            class="p-1 border border-gray-400 rounded-md w-1/3">
             <option value="disabled" disabled>Select Country</option>
             <option :value="country.countryCode" v-for="country in checkoutStore.countryList">{{ country.countryName }}
             </option>
@@ -166,7 +167,7 @@
             class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="100" required>
           <div class="flex gap-1.5 mt-2 mb-6">
             <select @change="checkoutStore.billingUpdateStates" v-model="formStore.formData.billingCountry"
-              id="countries" class="p-1 border border-gray-400 rounded-md" required>
+              id="countries" class="p-1 border border-gray-400 rounded-md w-1/3" required>
               <option disabled>Select Country</option>
               <option v-for="country in checkoutStore.countryList" :value="country.countryCode">{{ country.countryName
                 }}
@@ -185,7 +186,7 @@
 
         <!-- VIP Product -->
         <div class="flex flex-col justify-center items-center bg-[#FFBF00] p-2">
-          <p class="border-dashed border-red-500 border-2 py-4 px-[44%] mb-6">Timer</p>
+          <VipTimer />
           <div @click="() => addVipOptin()" class="flex items-center gap-6">
             <input :checked="vipOptin" type="checkbox" id="termsCheckbox" class="cursor-pointer">
             <div for="termsCheckbox" class="text-xs cursor-pointer font-bold text-pretty">
@@ -206,7 +207,7 @@
 
 
     <!-- Left Part -->
-    <aside class="w-3/12">
+    <aside class="w-[26%]">
       <section id="product-box" class="flex flex-col justify-center items-center p-2 bg-zinc-100">
         <div>
           <p class="text-red-600 font-semibold">
@@ -324,7 +325,7 @@ const bill = payment.billingInformation
 const needMoreStatus = ref(false);
 
 // shipGuard
-const isShipGuard = ref(false);
+const isShipGuard = ref(true);
 const addShipGuard = () => {
   isShipGuard.value = !isShipGuard.value;
   if (isShipGuard.value) {

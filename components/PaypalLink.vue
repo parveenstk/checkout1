@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-[#FFBF00] cursor-pointer rounded-md py-2 px-20">
+  <section class="bg-[#FFBF00] cursor-pointer rounded-md py-2 px-20 hover:bg-yellow-500">
     <img width="50" height="50" src="/images/paypal.svg" />
   </section>
 </template>

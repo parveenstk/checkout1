@@ -17,6 +17,8 @@ import {
 const checkoutStore = useCheckoutStore();
 // formStore
 const formStore = useFormStore();
+// cartStore
+const cartStore = useCartStore();
 
 // importClick API handler
 const importClick = async () => {
@@ -68,6 +70,9 @@ const queryCampaign = async () => {
     await checkoutStore.setCountryList(countries);
     await checkoutStore.updateStates();
     checkoutStore.billingUpdateStates();
+
+    // add shipGuard
+    cartStore.addProduct(3817);
   } catch (error) {
     console.error("Error:", error);
   }
