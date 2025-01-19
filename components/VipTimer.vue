@@ -1,5 +1,5 @@
 <template>
-    <div class="border-dashed border-red-500 border-2 py-2 px-40 mb-6">
+    <div class="border-dashed border-red-500 border-2 py-2 px-40 mb-6 w-full">
       <div>
         <table class="w-full">
           <tbody class="w-full">

@@ -1,7 +1,7 @@
 <template>
     <div>
-      <h1 class="font-bold">{{ formattedTime }}</h1>
-      <p v-if="timeLeft === 0">EXPIRED !</p>
+      <h1 class="font-bold text-red-500">{{ formattedTime }}</h1>
+      <p class="font-bold text-red-500" v-if="timeLeft === 0">EXPIRED !</p>
     </div>
   </template>
   
