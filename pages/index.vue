@@ -35,7 +35,7 @@ const importClick = async () => {
   }
 };
 
-importClick()
+// importClick()
 
 // queryCampaign API Handler
 const queryCampaign = async () => {
@@ -78,6 +78,6 @@ const queryCampaign = async () => {
   }
 };
 
-queryCampaign();
+// queryCampaign();
 
 </script>
