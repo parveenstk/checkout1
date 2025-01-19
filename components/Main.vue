@@ -26,7 +26,6 @@
       </div>
       <!-- vertical line -->
       <hr class="mb-3 mt-1" />
-      <!-- <div>{{ checkoutStore.airmotoPack }}</div> -->
       <!-- airmoto pakage product -->
       <div v-for="(airmoto, key) in checkoutStore.airmotoPack" @click="trackAirmotoPackage(airmoto.productId)">
         <OfferComponent v-if="key < 7" :key="key" :quantity="airmoto.quantity" :strokedPrice="airmoto.compareAtPrice"

@@ -1,6 +1,19 @@
 <template>
-  <div
-    class="border-zinc-400 border rounded-md font-semibold gap-2 flex justify-between items-center mb-2 cursor-pointer hover:bg-zinc-100">
+  <div :class="[
+    'border-zinc-400',
+    'border',
+    'rounded-md',
+    'font-semibold',
+    'gap-2',
+    'flex',
+    'justify-between',
+    'items-center',
+    'mb-2',
+    'cursor-pointer',
+    'hover:bg-zinc-100',
+    quantity === 3 ? 'bg-yellow-50' : '',
+    quantity === 10 ? 'bg-yellow-50' : '',
+  ]">
     <div>
       <input type="radio" class="ml-2 cursor-pointer" :checked="checked" />
       <span class="ml-2 font-bold">Buy {{ quantity }} - Airmoto </span>
