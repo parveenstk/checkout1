@@ -1,5 +1,11 @@
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
+    const param = new URLSearchParams({
+        loginId: "revboostapirs.creatunity",
+        password: "RSR6ryHh9eEeE1YjJ",
+        ...JSON.parse(body)
+    });
+    console.log(param)
     const requestOption = {
         method: "POST",
         headers: {
@@ -7,10 +13,9 @@ export default defineEventHandler(async (event) => {
         }
     }
     const data = await fetch(
-        "https://api.checkoutchamp.com/landers/clicks/import/?loginId=revboostapirs.creatunity&campaignId=65&pageType=checkoutPage&password=RSR6ryHh9eEeE1YjJ&requestUri=http://localhost:3001/",
+        "https://api.checkoutchamp.com/landers/clicks/import/?" + param.toString(),
         requestOption
     ).then(response => response.json());
-    
     return { ...data };
 })
 

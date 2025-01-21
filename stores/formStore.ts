@@ -28,8 +28,11 @@ export const useFormStore = defineStore("Form Store", () => {
         shippingMethod: "",
         discountCode: "",
         paymentMethod: "CREDITCARD",
-    }
+        ip: "",
+        salesUrl: "",
+    };
 
+    // getRequestUri();
     return {
         formData
     }
