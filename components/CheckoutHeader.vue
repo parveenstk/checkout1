@@ -11,7 +11,7 @@
         alt="badge_guarantee"
       />
 
-      <div class="text-white font-semibold">
+      <div class="text-white font-semibold hidden sm:block">
         <p>{{data.guaranteeText0}}</p>
         <p>{{data.guaranteeText1}}</p>
       </div>

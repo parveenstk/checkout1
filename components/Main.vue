@@ -56,19 +56,21 @@
         <!-- Shipping Address Section -->
         <p class="font-bold text-lg ">Shipping Address</p>
         <p class="mb-2">Enter your shipping address</p>
-        <input type="email" v-model="formStore.formData.email" required placeholder="Email (For Order Confirmation)"
+        <input type="email" id="email" v-model="formStore.formData.email" required
+          placeholder="Email (For Order Confirmation)"
           class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="30">
         <div id="firstName-lastName" class="flex gap-2 ">
-          <input type="text" required placeholder="First Name" @input="validateInput('firstName', $event)"
+          <input type="text" id="firstName" required placeholder="First Name"
+            @input="validateInput('firstName', $event)"
             class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2 mt-2" maxlength="20">
-          <input type="text" required placeholder="Last Name" @input="validateInput('lastName', $event)"
+          <input type="text" id="lastName" required placeholder="Last Name" @input="validateInput('lastName', $event)"
             class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2 mt-2" maxlength="20">
         </div>
-        <input type="text" v-model="formStore.formData.address" required placeholder="Address 1"
+        <input type="text" id="address" v-model="formStore.formData.address" required placeholder="Address 1"
           class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
-        <input type="text" placeholder="Apt., suite, etc (optional)" v-model="formStore.formData.address2"
+        <input type="text" id="address" placeholder="Apt., suite, etc (optional)" v-model="formStore.formData.address2"
           class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="50">
-        <input type="text" v-model="formStore.formData.city" required placeholder="Town / City"
+        <input type="text" id="city " v-model="formStore.formData.city" required placeholder="Town / City"
           class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2 mb-2 w-full" maxlength="50">
 
         <div class="flex gap-1.5">
@@ -129,7 +131,7 @@
               <input id="Year-Month" type="text" placeholder="MMYY" @input="validateInput('expiry', $event)"
                 class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" minlength="4" maxlength="4"
                 required />
-              <input id="CVV" type="text" placeholder="CVV Code" @input="validateInput('cvv', $event)"
+              <input id="number" type="text" placeholder="CVV Code" @input="validateInput('cvv', $event)"
                 class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" minlength="3" maxlength="4"
                 required />
             </div>
@@ -412,41 +414,39 @@ const importLead = async () => {
   const sessionId = sessionStorage.getItem("sessionId");
   const apiUrl = "/api/importLead";
   const data = {
-    // shipping detials
+    // Billing detials
+    firstName: formValues.firstName,
+    lastName: formValues.lastName,
+    emailAddress: formValues.email,
+    address1: formValues.address,
+    address2: formValues.address2,
+    city: formValues.billingCity,
+    country: formValues.billingCountry,
+    state: formValues.billingState,
+    postalCode: formValues.billingPostalCode,
+    phoneNumber: formValues.phoneNumber,
+    // // Shipping details
     shipFirstName: formValues.firstName,
     shipLastName: formValues.lastName,
-    emailAddress: formValues.email,
     shipAddress1: formValues.address,
     shipAddress2: formValues.address2,
-    shipCity: formValues.city,
-    shipCountry: formValues.country,
-    shipState: formValues.shipState,
-    shipPostalCode: formValues.postalCode,
-    phoneNumber: formValues.phoneNumber,
-    // billing details
-    billingFirstName: formValues.firstName,
-    billingLastName: formValues.lastName,
-    billingEmail: formValues.email,
-    billingAddress1: formValues.address,
-    billingAddress2: formValues.address2,
-    billingCity: formValues.billingCity,
-    billingCountry: formValues.billingCountry,
-    billingState: formValues.billingState,
-    billingPostalCode: formValues.billingPostalCode,
+    shipCity: formValues.billingCity,
+    shipCountry: formValues.billingCountry,
+    shipState: formValues.billingState,
+    shipPostalCode: formValues.billingPostalCode,
     billingPhoneNumber: formValues.phoneNumber,
-    campaignId: "65",
+    campaignId: 65,
     billShipSame: "",
-    ipAddress: "",
+    ipAddress: formValues.ip,
     sessionId: sessionId,
     couponCode: "",
     affId: "",
-    orderId: "",
-    pageType: "checkout",
-    requestUri: "http://localhost:3001/",
-    salesUrl: "http://localhost:3001/",
+    pageType: "checkoutPage",
+    requestUri: formValues.salesUrl,
+    salesUrl: formValues.salesUrl,
     shipProfileId: formValues.shippingMethod,
-    redirectsTo: "http://localhost:3001/",
-    errorRedirectsTo: "http://localhost:3001/",
+    redirectsTo: formValues.salesUrl,
+    errorRedirectsTo: formValues.salesUrl,
   }
   const requestOptions = {
     method: "POST",
@@ -459,12 +459,75 @@ const importLead = async () => {
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
     const data = await response.json();
-    console.log("importLead Data :", data);
+    // console.log("importLead Data :", data.message.orderId);
+
+    if (data.result === "SUCCESS") {
+      const orderId = data.message.orderId
+      sessionStorage.setItem("orderId", orderId);
+    }
   } catch (error) {
     console.error("Error:", error);
   }
 };
 
+// importOrder API Handler
+
+const importOrder = async () => {
+  const orderId = sessionStorage.getItem("orderId");
+  const apiUrl = "/api/importOrder";
+  const data = {
+    requestUri: formValues.salesUrl,
+    salesUrl: formValues.salesUrl,
+    pageType: "checkoutPage",
+    ipAddress: formValues.ip,
+    sessionId: sessionId,
+    orderId: orderId,
+    shipProfileId: "",
+    shipAddress1: formValues.address,
+    shipAddress2: formValues.address2,
+    shipCity: formValues.billingCity,
+    country: formValues.billingCountry,
+    postalCode: formValues.billingPostalCode,
+    state: formValues.billingState,
+    paySource: "",
+    custom1: "Airmoto RevBoost",
+    redirectsTo: formValues.salesUrl,
+    errorRedirectsTo: formValues.salesUrl,
+    firstName: formValues.firstName,
+    lastName: formValues.lastName,
+    emailAddress: formValues.email,
+    phoneNumber: formValues.phoneNumber,
+    forceMerchantId: 2,
+    product1_id: 3859,
+    product1_qty: "1",
+    variant1_id: "",
+    product1_price: 69.99,
+    product2_id: 3817,
+    product2_qty: 1,
+    variant2_id: "",
+    product2_price: 1.95,
+    cardNumber: formValues.cardNumber,
+    cardMonth: formValues.cardMonth,
+    cardYear: formValues.cardYear,
+    cardSecurityCode: "100",
+  }
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  };
+
+  try {
+    const response = await fetch(apiUrl, requestOptions);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    const data = await response.json();
+
+    if (data.result === "SUCCESS") {
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 // form data values
 const formValues = formStore.formData
 

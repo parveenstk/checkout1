@@ -8,8 +8,8 @@
 <script setup lang="ts">
 import {
   CheckoutHeader,
-  FormHead,
   FormFooter,
+  FormHead,
   Main,
 } from "~/components/export";
 
@@ -22,9 +22,17 @@ const cartStore = useCartStore();
 
 // importClick API handler
 const importClick = async () => {
+  const sessionId = sessionStorage.getItem("sessionId");
+  const data = {
+    ipAddress: formStore.formData.ip,
+    sessionId: sessionId,
+    pageType: "checkoutPage",
+    requestUri: formStore.formData.salesUrl,
+    campaignId: 65
+  }
   const requestOptions = {
     method: "POST",
-    body: JSON.stringify({}),
+    body: JSON.stringify(data),
   };
 
   const response = await fetch("/api/importClick", requestOptions).then(
@@ -34,8 +42,6 @@ const importClick = async () => {
     sessionStorage.setItem("sessionId", response.message.sessionId);
   }
 };
-
-// importClick()
 
 // queryCampaign API Handler
 const queryCampaign = async () => {
@@ -78,6 +84,31 @@ const queryCampaign = async () => {
   }
 };
 
-// queryCampaign();
+queryCampaign();
+
+// Ip Address
+const fetchIpInfo = async () => {
+  try {
+    const requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    // await fetch("https://ipinfo.io/json", requestOptions)
+    const response = await fetch("https://ipinfo.io/json");
+    const data = await response.json();
+    return data.ip;
+  } catch (error) {
+    // throw new Error;
+    console.error("Error fetching IP address:", error);
+    return error;
+  }
+};
+
+
+onMounted(async () => {
+  formStore.formData.ip = await fetchIpInfo();
+  formStore.formData.salesUrl = await getRequestUri();
+  importClick();
+})
 
 </script>

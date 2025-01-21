@@ -7,9 +7,8 @@ export default defineEventHandler(async (event) => {
             "Content-Type": "application/json",
         }
     }
-
     const data = await fetch(
-        "https://api.checkoutchamp.com/leads/import/?loginId=revboostapirs.creatunity&password=RSR6ryHh9eEeE1YjJ&" + param,
+        "https://api.konnektive.com/leads/import/?loginId=revboostapirs.creatunity&password=RSR6ryHh9eEeE1YjJ&" + param,
         requestOption
     ).then(response => response.json());
 
