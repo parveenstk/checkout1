@@ -86,9 +86,9 @@
             <option :value="state.stateName" v-for="state in checkoutStore.selectedStates">{{ state.stateName }}
             </option>
           </select>
-          <input id="postalCode" :maxlength="9" type="text" placeholder="Postal Code"
-            class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/3" maxlength="10" required
-            @input="validateInput('postalCode', $event)">
+          <input id="postalCode" v-model="formStore.formData.billingPostalCode" :maxlength="9" type="text"
+            placeholder="Postal Code" class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/3" maxlength="10"
+            required @input="validateInput('postalCode', $event)">
         </div>
 
         <input id="phoneNumber" :minlength="3" type="text" placeholder="Phone ( Optional )"
@@ -125,12 +125,12 @@
           </label>
           <div v-if="selectedPaymentMethod === 'creditCard'" class="border-2 p-4 flex flex-col gap-2 bg-blue-50 mb-0.5">
             <input id="creditCardNumber" type="tel" placeholder="Card Number"
-              class="border rounded-md border-gray-300 py-[6px] px-[12px] w-full" maxlength="17" required
+              class="border rounded-md border-gray-300 py-[6px] px-[12px] w-full" minlength="12" maxlength="17" required
               @input="validateInput('cardNumber', $event)" />
             <div class="flex gap-2">
-              <input id="Year-Month" type="text" placeholder="MMYY" @input="validateInput('expiry', $event)"
-                class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" minlength="4" maxlength="4"
-                required />
+              <input id="Year-Month" type="text" placeholder="MMYY" v-model="inputValues"
+                @input="handleExpiryDate($event)" class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2"
+                minlength="4" maxlength="4" required />
               <input id="number" type="text" placeholder="CVV Code" @input="validateInput('cvv', $event)"
                 class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/2" minlength="3" maxlength="4"
                 required />
@@ -162,9 +162,9 @@
         <div v-if="!sameShippingAddress">
           <h1 class="font-bold text-lg">{{ bill.headingText }}</h1>
           <p>{{ bill.billingText }}</p>
-          <input v-model="formStore.formData.billingAddress" type="text" placeholder="Street Address"
+          <input v-model="formStore.formData.billingAddress" type="text" id="streetAddress" placeholder="Street Address"
             class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="100" required>
-          <input v-model="formStore.formData.billingCity" type="text" placeholder="City"
+          <input v-model="formStore.formData.billingCity" type="text" id="city" placeholder="City"
             class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="100" required>
           <div class="flex gap-1.5 mt-2 mb-6">
             <select @change="checkoutStore.billingUpdateStates" v-model="formStore.formData.billingCountry"
@@ -205,7 +205,6 @@
         <img src="/public/images/badge_credit_cards.webp" alt="img2" width="364" height="40">
       </div>
     </section>
-
 
     <!-- Left Part -->
     <aside class="w-[26%]">
@@ -324,6 +323,9 @@ const bill = payment.billingInformation
 
 // needMore
 const needMoreStatus = ref(false);
+
+// routing
+const router = useRouter();
 
 // shipGuard
 const isShipGuard = ref(true);
@@ -464,6 +466,7 @@ const importLead = async () => {
     if (data.result === "SUCCESS") {
       const orderId = data.message.orderId
       sessionStorage.setItem("orderId", orderId);
+      await importOrder();
     }
   } catch (error) {
     console.error("Error:", error);
@@ -472,8 +475,11 @@ const importLead = async () => {
 
 // importOrder API Handler
 
+import { useRouter } from 'vue-router';
+
 const importOrder = async () => {
   const orderId = sessionStorage.getItem("orderId");
+  const sessionId = sessionStorage.getItem("sessionId");
   const apiUrl = "/api/importOrder";
   const data = {
     requestUri: formValues.salesUrl,
@@ -485,11 +491,15 @@ const importOrder = async () => {
     shipProfileId: "",
     shipAddress1: formValues.address,
     shipAddress2: formValues.address2,
-    shipCity: formValues.billingCity,
+    // billing address
     country: formValues.billingCountry,
-    postalCode: formValues.billingPostalCode,
     state: formValues.billingState,
-    paySource: "",
+    city: formValues.billingCity,
+    postalCode: formValues.billingPostalCode,
+    // Shipping Address
+    shipCity: formValues.city,
+    shipPostalCode: formValues.postalCode,
+    shipState: formValues.state,
     custom1: "Airmoto RevBoost",
     redirectsTo: formValues.salesUrl,
     errorRedirectsTo: formValues.salesUrl,
@@ -507,9 +517,10 @@ const importOrder = async () => {
     variant2_id: "",
     product2_price: 1.95,
     cardNumber: formValues.cardNumber,
-    cardMonth: formValues.cardMonth,
-    cardYear: formValues.cardYear,
+    cardMonth: formValues.expiryMonth,
+    cardYear: formValues.expiryYear,
     cardSecurityCode: "100",
+    paySource: "CREDITCARD",
   }
   const requestOptions = {
     method: "POST",
@@ -521,8 +532,10 @@ const importOrder = async () => {
     const response = await fetch(apiUrl, requestOptions);
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     const data = await response.json();
-
     if (data.result === "SUCCESS") {
+      router.push("/up1");
+    } else {
+      console.error("API response indicates failure :", data);
     }
   } catch (error) {
     console.error("Error:", error);
@@ -530,5 +543,30 @@ const importOrder = async () => {
 };
 // form data values
 const formValues = formStore.formData
+
+import { ref } from 'vue';
+const inputValues = ref('');
+const pair1 = ref('');
+const pair2 = ref('');
+
+// Function to process and save pairs
+const savePairs = () => {
+  const values = inputValues.value;
+  if (values.length === 4) {
+    pair1.value = values.slice(0, 2); // First 2 digits
+    formStore.formData.expiryMonth = pair1.value
+    console.log("expiryMonth", formStore.formData.expiryMonth);
+
+
+    pair2.value = values.slice(2, 4); // Last 2 digits
+    formStore.formData.expiryYear = pair2.value;
+    console.log("expiryYear", formStore.formData.expiryYear);
+  }
+};
+
+const handleExpiryDate = (event) => {
+  validateInput('expiry', event);
+  savePairs();
+}
 
 </script>

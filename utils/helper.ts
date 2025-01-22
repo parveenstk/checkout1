@@ -72,4 +72,110 @@ export const formContent = {
 
 }
 
+export const upsellContent = {
+  up1: {
+    headingText: "WAIT! Don't Miss This Exclusive One-Time Deal",
+    mainHeading: "Keep Your Airmoto Organized and Protected",
+    timerText: "Ending Soon :",
+    offerTitle: "Power Kit and 2-YR Warranty",
+    imageSrc: "/images/offers/up1.jpg",
+    rating: "★★★★★",
+    ratingText: "Best Value Deal",
+    productDescription: "Charge Your Airmoto Anywhere PLUS... 2 Year Total Protection!",
+    price: "Only $37/ea",
+    oldPrice: "Only $59/ea",
+    productDetails: [
+      "(1) Extended 3ft. Cable",
+      "(1) Home Adapter",
+      "(1) Car Charger",
+      "(1) 2-Year Warranty"
+    ],
+    addToOrderText: "Yes, Add to My Order!",
+    noThanksText: "No thanks, maybe later"
+  },
+  up2: {
+    headingText: "WAIT! Don't Miss This Exclusive One-Time Deal",
+    mainHeading: "Keep Your Airmoto Organized and Protected",
+    timerText: "Ending Soon :",
+    offerTitle: "Premium Carrying Case",
+    imageSrc: "/images/offers/up2.jpg",
+    rating: "★★★★★",
+    ratingText: "One-Time Offer",
+    productDescription: "Exclusive premium carrying case to keep your Airmoto safe and organized.",
+    price: "Only $19.95/ea",
+    oldPrice: "Only $24.95/ea",
+    productDetails: "The best way to keep your Airmoto and accessories organized. Our exclusive premium hard shell case will protect your items and fits perfectly in your glovebox, trunk, or bag.",
+    addToOrderText: "Yes, Add to My Order!",
+    noThanksText: "No thanks, maybe later"
+  },
+  up3: {
+    headingText: "CHECK THIS OUT...",
+    mainHeading: "Add More Airmoto's at our Best Deal Ever",
+    timerText: "Ending Soon :",
+    offerTitle: "New Customer One-Time Offer!",
+    imageSrc: "/images/offers/up3.jpg",
+    rating: "★★★★★",
+    ratingText: "New Customer Offer",
+    productDescription: "Over 80% of Customers Buy More and You Can Save Money Now!",
+    price: "Only $59/ea",
+    oldPrice: "Only $139/ea",
+    productDetails: "Here's your chance to grab an additional Airmoto with our One-Time New Customer discount! Just click the quantity below you want to add to your order. Hurry, we are selling out quick!",
+    selectyQtyText: "SELECT QUANTITY TO ADD :",
+    selectQty: [ "1", "2", "3", "4", "5"],
+    noThanksText: "No thanks, maybe later",
+  },
+}
 
+export const downsellContent = {
+  down1: {
+    headingText: "JUST CHECKING... ARE YOU SURE?",
+    mainHeading: "76% OF CUSTOMERS TAKE THIS LAST CHANCE OFFER!",
+    timerText: "Ending Soon :",
+    offerTitle: "Power Kit and 2-YR Warranty",
+    imageSrc: "/images/offers/down1.jpg",
+    rating: "★★★★★",
+    ratingText: "Last Chance Offer",
+    productDescription: "Charge Your Airmoto Anywhere PLUS... 2 Year Total Protection!",
+    price: "Only $24.95/ea",
+    oldPrice: "Only $59/ea",
+    productDetails: [
+      "(1) Extended 3ft. Cable",
+      "(1) Home Adapter",
+      "(1) Car Charger",
+      "(1) 2-Year Warranty"
+    ],
+    addToOrderText: "Yes, Add to My Order!",
+    noThanksText: "No thanks, maybe later"
+  },
+  down2: {
+    headingText: "JUST CHECKING... ARE YOU SURE?",
+    mainHeading: "LUCKY DISCOUNT WINNER!",
+    timerText: "Ending Soon :",
+    offerTitle: "Premium Carrying Case",
+    imageSrc: "/images/offers/down2.jpg",
+    rating: "★★★★★",
+    ratingText: "Lucky Discount Winner",
+    productDescription: "Exclusive premium carrying case to keep your Airmoto safe and organized.",
+    price: "Only $12.95/ea",
+    oldPrice: "Only $24.95/ea",
+    productDetails: "The best way to keep your Airmoto and accessories organized. Our exclusive premium hard shell case will protect your items and fits perfectly in your glovebox, trunk, or bag.",
+    addToOrderText: "Yes, Add to My Order!",
+    noThanksText: "No thanks, maybe later"
+  },
+  down3: {
+    headingText: "HOLD UP! This is one deal you shouldn't miss...",
+    mainHeading: "This Is Your Last and Final Chance",
+    timerText: "Ending Soon :",
+    offerTitle: "You Will Never See This Deal Again!",
+    imageSrc: "/images/offers/down3.jpg",
+    rating: "★★★★★",
+    ratingText: "Lucky Discount Winner",
+    productDescription: "Save money now with this exclusive one-time deal for new customers",
+    price: "Only $49/ea",
+    oldPrice: "Only $139/ea",
+    productDetails: "The best way to keep your Airmoto and accessories organized. Our exclusive premium hard shell case will protect your items and fits perfectly in your glovebox, trunk, or bag.",
+    selectyQtyText: "SELECT QUANTITY TO ADD:",
+    selectQty: ["1", "2", "3", "4", "5"],
+    noThanksText: "No thanks, maybe later",
+  },
+}

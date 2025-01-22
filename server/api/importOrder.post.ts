@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const data = await fetch(
-        "https://api.checkoutchamp.com/order/?loginId=revboostapirs.creatunity&password=RSR6ryHh9eEeE1YjJ" + param,
+        "https://api.checkoutchamp.com/order/import/?loginId=revboostapirs.creatunity&password=RSR6ryHh9eEeE1YjJ&" + param,
         requestOption
     ).then(response => response.json());
 

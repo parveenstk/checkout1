@@ -15,7 +15,7 @@
     quantity === 10 ? 'bg-yellow-50' : '',
   ]">
     <div>
-      <input type="radio" class="ml-2 cursor-pointer" :checked="checked" />
+      <input type="radio" class="ml-4 m-1 cursor-pointer" :checked="checked" />
       <span class="ml-2 font-bold">Buy {{ quantity }} - Airmoto </span>
     </div>
     <div id="part-2" class="flex flex-col justify-end mr-2 mt-2 mb-2 text-right">

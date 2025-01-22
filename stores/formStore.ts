@@ -17,14 +17,13 @@ export const useFormStore = defineStore("Form Store", () => {
         billingCity: "",
         billingCountry: "US",
         billingState: "",
+        billingPostalCode: "",
 
         // Card Details
         cardNumber: "",
         cvv: "",
-        expiry: "",
         expiryMonth: "",
         expiryYear: "",
-
         shippingMethod: "",
         discountCode: "",
         paymentMethod: "CREDITCARD",
