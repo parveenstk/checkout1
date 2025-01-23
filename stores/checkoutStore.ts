@@ -24,6 +24,8 @@ export const useCheckoutStore = defineStore('checkout', () => {
     // Airmoto Package Actions
     const addAllProducts = (productList: CampaignProduct[]) => {
         allProducts.value = productList;
+        console.log("productList :", productList);
+        
 
         productList.forEach((product, index) => {
             const obj: AirmotoPack = {

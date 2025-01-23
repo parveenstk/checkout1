@@ -6,7 +6,7 @@
       <div id="discount-timer" class="bg-[#eef3c9] flex justify-center items-center gap-2 py-2 rounded-lg">
         <p class="font-semibold">{{ timer.text1 }}</p>
         <p>{{ timer.text2 }}</p>
-        <Timer />
+        <Timer :initialTime="10 * 60" minuteLabel="" secondLabel="" />
       </div>
 
       <!-- Express Checkout -->
@@ -29,8 +29,10 @@
       <!-- airmoto pakage product -->
       <div v-for="(airmoto, key) in checkoutStore.airmotoPack" @click="trackAirmotoPackage(airmoto.productId)">
         <OfferComponent v-if="key < 7" :key="key" :quantity="airmoto.quantity" :strokedPrice="airmoto.compareAtPrice"
-          :rating="airmoto.rating" :adjectPrice="airmoto.adjectPrice"
-          :checked="selectedAirmoto === airmoto.productId" />
+          :rating="airmoto.rating" :adjectPrice="airmoto.adjectPrice" :checked="selectedAirmoto === airmoto.productId"
+          :class="{
+            'border-2 border-blue-500 transition-all duration-100': selectedAirmoto === airmoto.productId
+          }" />
       </div>
       <!-- Need More Button -->
       <div v-if="!needMoreStatus">
@@ -45,8 +47,10 @@
       <div v-if="needMoreStatus" v-for="(airmoto, key) in checkoutStore.airmotoPack"
         @click="trackAirmotoPackage(airmoto.productId)">
         <OfferComponent v-if="key >= 7" :key="key" :quantity="airmoto.quantity" :strokedPrice="airmoto.compareAtPrice"
-          :rating="airmoto.rating" :adjectPrice="airmoto.adjectPrice"
-          :checked="selectedAirmoto === airmoto.productId" />
+          :rating="airmoto.rating" :adjectPrice="airmoto.adjectPrice" :checked="selectedAirmoto === airmoto.productId"
+          :class="{
+            'border-2 border-blue-400 transition-all duration-100': selectedAirmoto === airmoto.productId
+          }" />
       </div>
 
       <div class="flex justify-center items-center p-1 mb-6">
@@ -555,12 +559,9 @@ const savePairs = () => {
   if (values.length === 4) {
     pair1.value = values.slice(0, 2); // First 2 digits
     formStore.formData.expiryMonth = pair1.value
-    console.log("expiryMonth", formStore.formData.expiryMonth);
-
 
     pair2.value = values.slice(2, 4); // Last 2 digits
     formStore.formData.expiryYear = pair2.value;
-    console.log("expiryYear", formStore.formData.expiryYear);
   }
 };
 

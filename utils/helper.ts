@@ -74,6 +74,7 @@ export const formContent = {
 
 export const upsellContent = {
   up1: {
+    id: "3950",
     headingText: "WAIT! Don't Miss This Exclusive One-Time Deal",
     mainHeading: "Keep Your Airmoto Organized and Protected",
     timerText: "Ending Soon :",
@@ -91,43 +92,14 @@ export const upsellContent = {
       "(1) 2-Year Warranty"
     ],
     addToOrderText: "Yes, Add to My Order!",
-    noThanksText: "No thanks, maybe later"
-  },
-  up2: {
-    headingText: "WAIT! Don't Miss This Exclusive One-Time Deal",
-    mainHeading: "Keep Your Airmoto Organized and Protected",
-    timerText: "Ending Soon :",
-    offerTitle: "Premium Carrying Case",
-    imageSrc: "/images/offers/up2.jpg",
-    rating: "★★★★★",
-    ratingText: "One-Time Offer",
-    productDescription: "Exclusive premium carrying case to keep your Airmoto safe and organized.",
-    price: "Only $19.95/ea",
-    oldPrice: "Only $24.95/ea",
-    productDetails: "The best way to keep your Airmoto and accessories organized. Our exclusive premium hard shell case will protect your items and fits perfectly in your glovebox, trunk, or bag.",
-    addToOrderText: "Yes, Add to My Order!",
-    noThanksText: "No thanks, maybe later"
-  },
-  up3: {
-    headingText: "CHECK THIS OUT...",
-    mainHeading: "Add More Airmoto's at our Best Deal Ever",
-    timerText: "Ending Soon :",
-    offerTitle: "New Customer One-Time Offer!",
-    imageSrc: "/images/offers/up3.jpg",
-    rating: "★★★★★",
-    ratingText: "New Customer Offer",
-    productDescription: "Over 80% of Customers Buy More and You Can Save Money Now!",
-    price: "Only $59/ea",
-    oldPrice: "Only $139/ea",
-    productDetails: "Here's your chance to grab an additional Airmoto with our One-Time New Customer discount! Just click the quantity below you want to add to your order. Hurry, we are selling out quick!",
-    selectyQtyText: "SELECT QUANTITY TO ADD :",
-    selectQty: [ "1", "2", "3", "4", "5"],
     noThanksText: "No thanks, maybe later",
+    nextStep: {
+      accept: 'up2',
+      decline: 'down1'
+    },
   },
-}
-
-export const downsellContent = {
   down1: {
+    id: "3951",
     headingText: "JUST CHECKING... ARE YOU SURE?",
     mainHeading: "76% OF CUSTOMERS TAKE THIS LAST CHANCE OFFER!",
     timerText: "Ending Soon :",
@@ -145,9 +117,34 @@ export const downsellContent = {
       "(1) 2-Year Warranty"
     ],
     addToOrderText: "Yes, Add to My Order!",
-    noThanksText: "No thanks, maybe later"
+    noThanksText: "No thanks, maybe later",
+    nextStep: {
+      accept: 'up2',
+      decline: 'up2'
+    },
+  },
+  up2: {
+    id: "3952",
+    headingText: "WAIT! Don't Miss This Exclusive One-Time Deal",
+    mainHeading: "Keep Your Airmoto Organized and Protected",
+    timerText: "Ending Soon :",
+    offerTitle: "Premium Carrying Case",
+    imageSrc: "/images/offers/up2.jpg",
+    rating: "★★★★★",
+    ratingText: "One-Time Offer",
+    productDescription: "Exclusive premium carrying case to keep your Airmoto safe and organized.",
+    price: "Only $19.95/ea",
+    oldPrice: "Only $24.95/ea",
+    productDetails: "The best way to keep your Airmoto and accessories organized. Our exclusive premium hard shell case will protect your items and fits perfectly in your glovebox, trunk, or bag.",
+    addToOrderText: "Yes, Add to My Order!",
+    noThanksText: "No thanks, maybe later",
+    nextStep: {
+      accept: 'up3',
+      decline: 'down2'
+    },
   },
   down2: {
+    id: "3953",
     headingText: "JUST CHECKING... ARE YOU SURE?",
     mainHeading: "LUCKY DISCOUNT WINNER!",
     timerText: "Ending Soon :",
@@ -160,9 +157,35 @@ export const downsellContent = {
     oldPrice: "Only $24.95/ea",
     productDetails: "The best way to keep your Airmoto and accessories organized. Our exclusive premium hard shell case will protect your items and fits perfectly in your glovebox, trunk, or bag.",
     addToOrderText: "Yes, Add to My Order!",
-    noThanksText: "No thanks, maybe later"
+    noThanksText: "No thanks, maybe later",
+    nextStep: {
+      accept: 'up3',
+      decline: 'up3'
+    },
+  },
+  up3: {
+    id: "3954",
+    headingText: "CHECK THIS OUT...",
+    mainHeading: "Add More Airmoto's at our Best Deal Ever",
+    timerText: "Ending Soon :",
+    offerTitle: "New Customer One-Time Offer!",
+    imageSrc: "/images/offers/up3.jpg",
+    rating: "★★★★★",
+    ratingText: "New Customer Offer",
+    productDescription: "Over 80% of Customers Buy More and You Can Save Money Now!",
+    price: "Only $59/ea",
+    oldPrice: "Only $139/ea",
+    productDetails: "Here's your chance to grab an additional Airmoto with our One-Time New Customer discount! Just click the quantity below you want to add to your order. Hurry, we are selling out quick!",
+    selectyQtyText: "SELECT QUANTITY TO ADD :",
+    selectQty: ["1", "2", "3", "4", "5"],
+    noThanksText: "No thanks, maybe later",
+    nextStep: {
+      accept: 'thankyou',
+      decline: 'down3'
+    },
   },
   down3: {
+    id: "3955",
     headingText: "HOLD UP! This is one deal you shouldn't miss...",
     mainHeading: "This Is Your Last and Final Chance",
     timerText: "Ending Soon :",
@@ -177,5 +200,9 @@ export const downsellContent = {
     selectyQtyText: "SELECT QUANTITY TO ADD:",
     selectQty: ["1", "2", "3", "4", "5"],
     noThanksText: "No thanks, maybe later",
+    nextStep: {
+      accept: 'thankyou',
+      decline: 'thankyou'
+    },
   },
 }
