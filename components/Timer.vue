@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="font-bold text-red-500">
+    <h1 v-if="timeLeft !== 0" class="font-bold text-red-500">
       {{ formattedMinutes }} {{ minuteLabel }} : {{ formattedSeconds }} {{ secondLabel }}
     </h1>
     <p class="font-bold text-red-500" v-if="timeLeft === 0">EXPIRED !</p>

@@ -1,6 +1,5 @@
 <template>
   <div :class="[
-    'border-zinc-400',
     'border',
     'rounded-md',
     'font-semibold',

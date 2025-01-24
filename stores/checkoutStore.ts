@@ -56,6 +56,7 @@ export const useCheckoutStore = defineStore('checkout', () => {
             if (product.campaignProductId === 3859 || product.campaignProductId === 3860 || product.campaignProductId === 3861 || product.campaignProductId === 3862 || product.campaignProductId === 3863 || product.campaignProductId === 3864 || product.campaignProductId === 3865 || product.campaignProductId === 3866 || product.campaignProductId === 3867 || product.campaignProductId === 3868) {
                 airmotoPack.value.push(obj);
             } else {
+                obj.quantity = 1;
                 otherProducts.value.push(obj);
             }
         })

@@ -13,10 +13,11 @@ export const useCartStore = defineStore('cart', () => {
 
     const updateAirmotoInCart = (id: number) => {
         const selectedPack = checkoutStore.airmotoPack.filter(pack => pack.productId === id);
+        // set quanity in session
+        sessionStorage.setItem('selectedPack', selectedPack[0].quantity)
         if(cartData.value.length > 0) cartData.value.shift();
         cartData.value.unshift(selectedPack[0]);
         discoutOffer();
-
     }
 
     // discount savings amount
@@ -33,6 +34,8 @@ export const useCartStore = defineStore('cart', () => {
     // add product in cart
     const addProduct = (id: number) => {
         const selectedProduct = checkoutStore.otherProducts.filter(product => product.productId === id)
+        console.log("selectedProduct",selectedProduct);
+        
         cartData.value.push(selectedProduct[0]);
     }
 

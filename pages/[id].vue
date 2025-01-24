@@ -21,7 +21,10 @@
                 <p class="text-lg font-bold">{{ pageData.timerText }}</p>
                 <Timer class="text-lg font-bold" :initialTime="5 * 60" minuteLabel="Minutes" secondLabel="Seconds" />
             </div>
-            <h2 class="font-bold text-3xl m-5">{{ pageData.offerTitle }}</h2>
+            <div class="font-bold text-3xl m-5 flex gap-2">
+                <h2 v-if="currentPage !== 'up3' && currentPage !== 'down3'">{{ selectedPack }}</h2>
+                <h2>{{ pageData.offerTitle }}</h2>
+            </div>
         </div>
     </section>
     <!-- Product & Details -->
@@ -99,7 +102,7 @@
                 </div>
 
                 <div v-if="currentPage === 'up3'" class="flex gap-2">
-                    <button v-for="qty in pageData.selectQty" :key="qty"
+                    <button @click="handleQtyPurchase(qty)" v-for="qty in pageData.selectQty" :key="qty"
                         class="px-7 py-3 bg-[#FFD431] font-bold border-yellow-600 rounded-md border-2 w-fit">{{ qty
                         }}</button>
                 </div>
@@ -113,7 +116,8 @@
                 <button @click="() => importUpsale()" v-if="currentPage === 'down1' || currentPage === 'down2'"
                     class="animate-wiggle font-bold py-4 bg-[#FF0000] text-white hover:bg-yellow-500 w-full rounded-md border-red-500 border-2 ">{{
                         pageData.addToOrderText }}</button>
-                <button @click="noThanks()" class="font-bold text-zinc-500 text-xl mb-6">{{ pageData.noThanksText }}</button>
+                <button @click="noThanks()" class="font-bold text-zinc-500 text-xl mb-6">{{ pageData.noThanksText
+                    }}</button>
             </div>
         </div>
     </section>
@@ -127,10 +131,18 @@ const pageId = route.params.id; // Access the dynamic ID
 const currentPage = pageId;
 const pageData = upsellContent[currentPage]
 
+// selected pack from sesion
+const selectedPack = ref("");
+onMounted(() => {
+    if (sessionStorage) {
+        selectedPack.value = `(${sessionStorage.getItem('selectedPack')})`;
+        productDetails.value.qty = sessionStorage.getItem('selectedPack');
+    };
+})
 // productDetails
 const productDetails = ref({
     id: pageData.id,
-    qty: 1,
+    qty: '',
     nextStep: pageData.nextStep
 })
 
@@ -169,6 +181,11 @@ const importUpsale = async () => {
 };
 
 const noThanks = () => {
-        router.push(productDetails.value.nextStep.decline)
-    }
+    router.push(productDetails.value.nextStep.decline)
+}
+
+const handleQtyPurchase = (qty) => {
+    productDetails.value.qty = qty
+    importUpsale();
+} 
 </script>

@@ -30,9 +30,8 @@
       <div v-for="(airmoto, key) in checkoutStore.airmotoPack" @click="trackAirmotoPackage(airmoto.productId)">
         <OfferComponent v-if="key < 7" :key="key" :quantity="airmoto.quantity" :strokedPrice="airmoto.compareAtPrice"
           :rating="airmoto.rating" :adjectPrice="airmoto.adjectPrice" :checked="selectedAirmoto === airmoto.productId"
-          :class="{
-            'border-2 border-blue-500 transition-all duration-100': selectedAirmoto === airmoto.productId
-          }" />
+          class="border-2 transition-all duration-100"
+          :class="[selectedAirmoto === airmoto.productId ? 'border-blue-500': 'border-slate-200' ]" />
       </div>
       <!-- Need More Button -->
       <div v-if="!needMoreStatus">
@@ -48,9 +47,8 @@
         @click="trackAirmotoPackage(airmoto.productId)">
         <OfferComponent v-if="key >= 7" :key="key" :quantity="airmoto.quantity" :strokedPrice="airmoto.compareAtPrice"
           :rating="airmoto.rating" :adjectPrice="airmoto.adjectPrice" :checked="selectedAirmoto === airmoto.productId"
-          :class="{
-            'border-2 border-blue-400 transition-all duration-100': selectedAirmoto === airmoto.productId
-          }" />
+          class="border-2 transition-all duration-100"
+          :class="[selectedAirmoto === airmoto.productId ? 'border-blue-500': 'border-slate-200' ]" />
       </div>
 
       <div class="flex justify-center items-center p-1 mb-6">
@@ -167,25 +165,25 @@
           <h1 class="font-bold text-lg">{{ bill.headingText }}</h1>
           <p>{{ bill.billingText }}</p>
           <input v-model="formStore.formData.billingAddress" type="text" id="streetAddress" placeholder="Street Address"
-            class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="100" required>
+            class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="100">
           <input v-model="formStore.formData.billingCity" type="text" id="city" placeholder="City"
-            class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="100" required>
+            class="border rounded-md border-gray-300 py-[6px] px-[12px] mt-2  w-full" maxlength="100">
           <div class="flex gap-1.5 mt-2 mb-6">
             <select @change="checkoutStore.billingUpdateStates" v-model="formStore.formData.billingCountry"
-              id="countries" class="p-1 border border-gray-400 rounded-md w-1/3" required>
+              id="countries" class="p-1 border border-gray-400 rounded-md w-1/3">
               <option disabled>Select Country</option>
               <option v-for="country in checkoutStore.countryList" :value="country.countryCode">{{ country.countryName
                 }}
               </option>
             </select>
             <select v-model="formStore.formData.billingState" id="countries"
-              class="p-1.5 border border-gray-400 rounded-md w-1/3" required>
+              class="p-1.5 border border-gray-400 rounded-md w-1/3">
               <option value="" disabled>Select State</option>
               <option :key="state.stateCode" :value="state.stateCode"
                 v-for="state in checkoutStore.billingSelectedStates">{{ state.stateName }}</option>
             </select>
             <input @input="validateInput('zipCode', $event)" id="postalCode" type="text" placeholder="Zip"
-              class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/3" :minlength="3" :maxlength="9" required>
+              class="border rounded-md border-gray-300 py-[6px] px-[12px] w-1/3" :minlength="3" :maxlength="9">
           </div>
         </div>
 
@@ -262,7 +260,7 @@
       </p>
       <div class="flex flex-col justify-center items-center gap-3 bg-zinc-100 pb-4">
         <div class="flex justify-center gap-2">
-          <input type="text" id="coupon-code" class="w-1/2 border border-black rounded-md px-[10px]"
+          <input type="text" id="coupon-code" class="w-1/2 border border-black rounded-md px-[10px]" maxlength="20"
             placeholder="Coupon Code" />
           <button class="py-1 px-4 bg-black text-white font-bold rounded-md">
             Apply
@@ -360,7 +358,6 @@ const trackAirmotoPackage = (id) => {
   cartStore.updateAirmotoInCart(id);
 
   // update shipping option
-  const selectedShippingOption = ref(153)
   if (id === 3859) formStore.formData.shippingMethod = "153";
   else formStore.formData.shippingMethod = "154";
   cartStore.updateShippingPrice();
@@ -369,6 +366,7 @@ const trackAirmotoPackage = (id) => {
 // handle submit
 const handleSubmit = (e) => {
   e.preventDefault();
+  billSame(sameShippingAddress.value);
   importLead();
   console.log("formStore.formData", formStore.formData);
 }
@@ -470,7 +468,7 @@ const importLead = async () => {
     if (data.result === "SUCCESS") {
       const orderId = data.message.orderId
       sessionStorage.setItem("orderId", orderId);
-      await importOrder();
+      // await importOrder();
     }
   } catch (error) {
     console.error("Error:", error);
@@ -512,20 +510,19 @@ const importOrder = async () => {
     emailAddress: formValues.email,
     phoneNumber: formValues.phoneNumber,
     forceMerchantId: 2,
-    product1_id: 3859,
-    product1_qty: "1",
-    variant1_id: "",
-    product1_price: 69.99,
-    product2_id: 3817,
-    product2_qty: 1,
-    variant2_id: "",
-    product2_price: 1.95,
     cardNumber: formValues.cardNumber,
     cardMonth: formValues.expiryMonth,
     cardYear: formValues.expiryYear,
     cardSecurityCode: "100",
     paySource: "CREDITCARD",
   }
+
+  cartStore.cartData.map((prod, index) => {
+    data[`product${index + 1}_id`] = prod.productId;
+    data[`product${index + 1}_qty`] = prod.quantity;
+    data[`product${index + 1}_price`] = prod.price;
+  })
+
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
