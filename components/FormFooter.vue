@@ -1,6 +1,6 @@
 <template>
-    <section id="green-bottm" class="bg-[#3cb54b] py-5 px-10">
-        <div  class="flex justify-around text-white">
+    <section v-if="!notFound" id="green-bottm" class="bg-[#3cb54b] py-5 px-10">
+        <div class="flex justify-around text-white">
             <div id="left" class="w-1/3 flex flex-col items-center justify-center gap-5">
                 <p class="text-5xl font-bold text-center">90 Day Money Back Guarantee</p>
                 <p class="text-center text-xs sm:text-sm">Enjoy the convenience and peace of mind knowing you're prepared for
@@ -27,3 +27,11 @@
         </div>
     </section>
 </template>
+<script setup>
+const props = defineProps({
+    notFound: {
+        type: Boolean,
+        default: true
+    }
+})
+</script>
